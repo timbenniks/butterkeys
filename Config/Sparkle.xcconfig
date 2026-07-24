@@ -1,0 +1,6 @@
+// Sparkle update feed (GitHub Releases). Override at release time if the repo URL differs.
+// Public EdDSA key is filled by scripts/setup-sparkle-keys.sh into SparklePublicEDKey.xcconfig.
+#include? "SparklePublicEDKey.xcconfig"
+
+SPARKLE_FEED_URL = https:/$()/github.com/timbenniks/butterkeys/releases/latest/download/appcast.xml
+SPARKLE_PUBLIC_ED_KEY = $(SPARKLE_PUBLIC_ED_KEY)

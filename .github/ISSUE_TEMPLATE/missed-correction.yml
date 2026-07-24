@@ -1,0 +1,34 @@
+name: Missed correction
+description: A typo you expected ButterKeys to fix was left unchanged
+title: "Missed correction: "
+labels: ["missed-correction"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What you typed → what you expected
+      placeholder: "writigg → writing"
+    validations:
+      required: true
+  - type: input
+    id: app
+    attributes:
+      label: App
+      placeholder: Cursor / Notes / …
+    validations:
+      required: true
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Likely app mode
+      options: [Prose, Code-safe, Plain text, Not sure]
+  - type: textarea
+    id: context
+    attributes:
+      label: Notes
+      description: Was learning on? Any custom rules?
+  - type: input
+    id: version
+    attributes:
+      label: ButterKeys version
+      placeholder: 1.0.0 (1)

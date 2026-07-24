@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ButterKeys — Typing, but smoother.</title>
+  <meta name="description" content="ButterKeys quietly fixes the recurring little mistakes your fingers make. Local-first macOS menu bar app. No cloud. No accounts." />
+  <link rel="icon" href="butterkeys.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Space+Grotesk:wght@500;600;700&family=Outfit:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --milk: #eef4f7;
+      --frost: #f7fbfd;
+      --ink: #16202b;
+      --ink-soft: #3d4a58;
+      --butter: #f0c14a;
+      --butter-deep: #d4a017;
+      --toast: #6b4a1e;
+      --line: rgba(22, 32, 43, 0.12);
+      --glow: rgba(240, 193, 74, 0.45);
+      --radius: 18px;
+      --font-display: "Space Grotesk", system-ui, sans-serif;
+      --font-serif: "Fraunces", Georgia, serif;
+      --font-ui: "Outfit", system-ui, sans-serif;
+      --font-body: "IBM Plex Sans", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 600px at 80% -10%, rgba(240, 193, 74, 0.22), transparent 55%),
+        radial-gradient(900px 500px at -10% 30%, rgba(180, 210, 230, 0.55), transparent 50%),
+        linear-gradient(180deg, var(--frost) 0%, var(--milk) 45%, #e4eef3 100%);
+      min-height: 100vh;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Soft fridge-shelf grain */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      z-index: 0;
+    }
+
+    a { color: inherit; }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      width: min(1080px, calc(100% - 2.5rem));
+      margin: 0 auto;
+    }
+
+    /* —— Header —— */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 0 0;
+      gap: 1rem;
+    }
+
+    .mark {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      text-decoration: none;
+      font-family: var(--font-ui);
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+    }
+
+    .mark img {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      box-shadow: 0 6px 16px rgba(107, 74, 30, 0.18);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+    }
+
+    nav a { text-decoration: none; }
+    nav a:hover { color: var(--ink); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.7rem 1.15rem;
+      border-radius: 999px;
+      border: none;
+      font: inherit;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--butter-deep);
+      outline-offset: 3px;
+    }
+
+    .btn-butter {
+      background: var(--butter);
+      color: var(--toast);
+      box-shadow: 0 8px 24px var(--glow);
+    }
+
+    .btn-butter:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 28px var(--glow);
+      background: #f5cb5c;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink-soft);
+      border: 1px solid var(--line);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.55);
+      color: var(--ink);
+    }
+
+    /* —— Hero —— */
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 3rem;
+      align-items: center;
+      padding: 4.5rem 0 3.5rem;
+      min-height: min(78vh, 720px);
+    }
+
+    .hero-copy h1 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(2.6rem, 6vw, 4.4rem);
+      letter-spacing: -0.045em;
+      line-height: 0.98;
+      margin-bottom: 1rem;
+      color: var(--ink);
+    }
+
+    .hero-copy h1 em {
+      font-family: var(--font-serif);
+      font-style: normal;
+      font-weight: 500;
+      color: var(--toast);
+      letter-spacing: -0.02em;
+    }
+
+    .lede {
+      font-size: 1.15rem;
+      color: var(--ink-soft);
+      max-width: 34ch;
+      margin-bottom: 1.75rem;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .fine {
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+    }
+
+    /* —— Melt stage (signature) —— */
+    .stage {
+      position: relative;
+      background: linear-gradient(165deg, #ffffff 0%, #f3f8fb 100%);
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 6px);
+      padding: 1.5rem 1.5rem 1.35rem;
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.9) inset,
+        0 30px 60px rgba(22, 32, 43, 0.08);
+    }
+
+    .stage-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    .dots { display: flex; gap: 0.35rem; }
+    .dots span {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #d5dee6;
+    }
+    .dots span:nth-child(1) { background: #ff6b6b; }
+    .dots span:nth-child(2) { background: var(--butter); }
+    .dots span:nth-child(3) { background: #7dcea0; }
+
+    .type-line {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 3.2vw, 2.15rem);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      line-height: 1.35;
+      min-height: 3.2em;
+      color: var(--ink);
+    }
+
+    .slip {
+      display: inline-block;
+      position: relative;
+      padding: 0 0.12em;
+      border-radius: 0.25em;
+    }
+
+    .slip.is-wrong {
+      color: var(--toast);
+      background: rgba(240, 193, 74, 0.28);
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+      text-decoration-color: rgba(107, 74, 30, 0.45);
+    }
+
+    .slip.is-melting {
+      animation: melt 0.55s ease forwards;
+    }
+
+    .slip.is-smooth {
+      color: var(--ink);
+      background: transparent;
+      animation: settle 0.4s ease;
+    }
+
+    @keyframes melt {
+      0% { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); }
+      55% { transform: translateY(6px) scale(1.04, 0.92); opacity: 0.35; filter: blur(1px); }
+      100% { transform: translateY(10px) scale(1.06, 0.7); opacity: 0; filter: blur(2px); }
+    }
+
+    @keyframes settle {
+      from { transform: translateY(-4px); opacity: 0.4; }
+      to { transform: none; opacity: 1; }
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.05em;
+      margin-left: 2px;
+      background: var(--butter-deep);
+      vertical-align: text-bottom;
+      animation: blink 1s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    .stage-caption {
+      margin-top: 1.1rem;
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(240, 193, 74, 0.2);
+      color: var(--toast);
+      font-weight: 600;
+      font-size: 0.78rem;
+    }
+
+    /* —— Band —— */
+    .band {
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 1.1rem 0;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(8px);
+    }
+
+    .marquee {
+      display: flex;
+      gap: 2.5rem;
+      white-space: nowrap;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: -0.02em;
+      color: var(--ink-soft);
+      animation: scroll 28s linear infinite;
+      width: max-content;
+    }
+
+    .marquee span b { color: var(--ink); font-weight: 800; }
+    .marquee .arrow { color: var(--butter-deep); padding: 0 0.35rem; }
+
+    @keyframes scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* —— Sections —— */
+    section {
+      padding: 4.5rem 0;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(1.75rem, 3vw, 2.35rem);
+      letter-spacing: -0.035em;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-lede {
+      color: var(--ink-soft);
+      max-width: 42ch;
+      margin-bottom: 2.25rem;
+    }
+
+    .beats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .beat {
+      padding: 1.35rem 1.25rem 1.4rem;
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid var(--line);
+    }
+
+    .beat h3 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.45rem;
+    }
+
+    .beat p {
+      color: var(--ink-soft);
+      font-size: 0.95rem;
+    }
+
+    .beat .ico {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--butter-deep);
+      margin-bottom: 0.7rem;
+      display: block;
+    }
+
+    /* Privacy strip */
+    .privacy {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 1.5rem;
+      align-items: center;
+      padding: 1.5rem 1.75rem;
+      border-radius: var(--radius);
+      background: var(--ink);
+      color: #e8eef3;
+    }
+
+    .privacy strong {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    .privacy p {
+      color: rgba(232, 238, 243, 0.72);
+      font-size: 0.95rem;
+      max-width: 48ch;
+    }
+
+    .butter-stack {
+      width: 64px;
+      height: 64px;
+      border-radius: 14px;
+      object-fit: cover;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Download */
+    .download {
+      text-align: center;
+      padding-bottom: 5rem;
+    }
+
+    .download .section-title { margin-bottom: 0.75rem; }
+    .download .section-lede {
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 1.75rem;
+    }
+
+    .reqs {
+      margin-top: 1.25rem;
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 1.5rem 0 2.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.75rem;
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+    }
+
+    footer a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+    @media (max-width: 860px) {
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding-top: 2.5rem;
+        min-height: 0;
+      }
+      .beats { grid-template-columns: 1fr; }
+      .privacy {
+        grid-template-columns: 1fr;
+        text-align: left;
+      }
+      nav .hide-sm { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .marquee, .cursor, .slip.is-melting, .slip.is-smooth { animation: none !important; }
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a class="mark" href="#">
+        <img src="butterkeys.png" alt="" width="40" height="40" />
+        ButterKeys
+      </a>
+      <nav>
+        <a class="hide-sm" href="#how">How it works</a>
+        <a class="hide-sm" href="#privacy">Privacy</a>
+        <a class="btn btn-butter" href="#download">Get the DMG</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-label="Introduction">
+        <div class="hero-copy">
+          <h1>Typing,<br /><em>but smoother.</em></h1>
+          <p class="lede">
+            A macOS menu bar app that quietly melts your recurring finger slips
+            into the words you meant — on your Mac, offline.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn-butter" href="#download">Download for Mac</a>
+            <a class="btn btn-ghost" href="https://github.com/timbenniks/butterkeys" rel="noopener">GitHub</a>
+          </div>
+          <p class="fine">macOS 14+ · Apple Silicon preferred · No account</p>
+        </div>
+
+        <aside class="stage" aria-label="Live correction demo">
+          <div class="stage-bar">
+            <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+            <span>Notes · live melt</span>
+          </div>
+          <p class="type-line" id="demo" aria-live="polite">
+            <span id="demo-text"></span><span class="cursor" aria-hidden="true"></span>
+          </p>
+          <div class="stage-caption">
+            <span>Watch the same slips your fingers make.</span>
+            <span class="pill" id="demo-pill">teh → the</span>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </div>
+
+  <div class="band" aria-hidden="true">
+    <div class="marquee">
+      <span><b>teh</b><span class="arrow">→</span>the</span>
+      <span><b>soem</b><span class="arrow">→</span>some</span>
+      <span><b>writign</b><span class="arrow">→</span>writing</span>
+      <span><b>jsut</b><span class="arrow">→</span>just</span>
+      <span><b>int he</b><span class="arrow">→</span>in the</span>
+      <span><b>htis</b><span class="arrow">→</span>this</span>
+      <span><b>teh</b><span class="arrow">→</span>the</span>
+      <span><b>soem</b><span class="arrow">→</span>some</span>
+      <span><b>writign</b><span class="arrow">→</span>writing</span>
+      <span><b>jsut</b><span class="arrow">→</span>just</span>
+      <span><b>int he</b><span class="arrow">→</span>in the</span>
+      <span><b>htis</b><span class="arrow">→</span>this</span>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <section id="how">
+      <h2 class="section-title">Motor patterns, not spellcheck</h2>
+      <p class="section-lede">
+        ButterKeys watches for the mistakes you repeat — adjacent swaps, early spaces, the classic
+        <i>teh</i> — and only acts when it’s confident.
+      </p>
+      <div class="beats">
+        <article class="beat">
+          <span class="ico" aria-hidden="true">∿</span>
+          <h3>Melt, don’t nag</h3>
+          <p>High-confidence slips become the right word as you type. Unsure? It leaves your text alone.</p>
+        </article>
+        <article class="beat">
+          <span class="ico" aria-hidden="true">⌘</span>
+          <h3>Stays in the bar</h3>
+          <p>Menu bar agent. Undo with ⌃⌥Z. Pause anytime. Code editors stay on a narrower “code-safe” mode.</p>
+        </article>
+        <article class="beat">
+          <span class="ico" aria-hidden="true">⌂</span>
+          <h3>Fridge-local</h3>
+          <p>No cloud AI. No sentence storage. Just compact pairs like soem→some if you enable learning.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="privacy">
+      <div class="privacy">
+        <img class="butter-stack" src="butterkeys.png" alt="" width="64" height="64" />
+        <div>
+          <strong>Your typing stays on your Mac.</strong>
+          <p>
+            Corrections never leave the machine. Update checks (optional) only hit the release feed —
+            never your keystrokes.
+          </p>
+        </div>
+        <a class="btn btn-ghost" style="color:#e8eef3;border-color:rgba(255,255,255,0.2)" href="https://github.com/timbenniks/butterkeys/blob/main/docs/privacy/PRIVACY.md" rel="noopener">Privacy notes</a>
+      </div>
+    </section>
+
+    <section class="download" id="download">
+      <h2 class="section-title">Spread some ButterKeys</h2>
+      <p class="section-lede">
+        Early builds ship as a notarized DMG when ready. Until then, grab the latest release from GitHub.
+      </p>
+      <a class="btn btn-butter" href="https://github.com/timbenniks/butterkeys/releases/latest" rel="noopener">
+        Download ButterKeys
+      </a>
+      <p class="reqs">
+        After install: enable Input Monitoring + Accessibility for the app in Applications, then relaunch.
+      </p>
+    </section>
+
+    <footer>
+      <span>© Tim Benniks · ButterKeys</span>
+      <span>
+        <a href="https://github.com/timbenniks/butterkeys/blob/main/docs/download.md">Install guide</a>
+        ·
+        <a href="https://github.com/timbenniks/butterkeys">Source</a>
+      </span>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      const pairs = [
+        { wrong: "teh", right: "the", sentence: ["I", "meant", "to", "write", null, "word."] },
+        { wrong: "soem", right: "some", sentence: ["Just", null, "butter", "on", "top."] },
+        { wrong: "writign", right: "writing", sentence: ["Quiet", null, "fixes."] },
+        { wrong: "jsut", right: "just", sentence: ["It", "was", null, "a", "slip."] },
+        { wrong: "htis", right: "this", sentence: ["Watch", null, "melt."] }
+      ];
+
+      const textEl = document.getElementById("demo-text");
+      const pill = document.getElementById("demo-pill");
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      let i = 0;
+
+      function sleep(ms) {
+        return new Promise((r) => setTimeout(r, ms));
+      }
+
+      async function typeWord(word, className) {
+        const span = document.createElement("span");
+        if (className) span.className = className;
+        textEl.appendChild(span);
+        for (const ch of word) {
+          span.textContent += ch;
+          if (!reduced) await sleep(48 + Math.random() * 40);
+        }
+        return span;
+      }
+
+      async function runCycle() {
+        const pair = pairs[i % pairs.length];
+        i += 1;
+        pill.textContent = pair.wrong + " → " + pair.right;
+        textEl.innerHTML = "";
+
+        for (const part of pair.sentence) {
+          if (part === null) {
+            const slip = await typeWord(pair.wrong, "slip is-wrong");
+            if (!reduced) await sleep(650);
+            if (reduced) {
+              slip.textContent = pair.right;
+              slip.className = "slip is-smooth";
+            } else {
+              slip.classList.add("is-melting");
+              await sleep(520);
+              slip.textContent = pair.right;
+              slip.className = "slip is-smooth";
+            }
+            textEl.appendChild(document.createTextNode(" "));
+          } else {
+            await typeWord(part + " ");
+          }
+        }
+
+        await sleep(reduced ? 1800 : 2400);
+        runCycle();
+      }
+
+      runCycle();
+    })();
+  </script>
+</body>
+</html>

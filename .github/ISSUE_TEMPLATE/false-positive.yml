@@ -1,0 +1,37 @@
+name: False positive
+description: ButterKeys corrected text it should have left alone
+title: "False positive: "
+labels: ["false-positive"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: Original → replacement, and what you meant.
+      placeholder: "met → me (I was writing Dutch for “with”)"
+    validations:
+      required: true
+  - type: input
+    id: app
+    attributes:
+      label: App (bundle ID if known)
+      placeholder: net.whatsapp.WhatsApp
+    validations:
+      required: true
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language you were writing
+      options: [English, Dutch, Other / mixed]
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Redacted diagnostics (optional)
+      description: Settings → Advanced → Copy redacted diagnostics
+  - type: input
+    id: version
+    attributes:
+      label: ButterKeys version
+      placeholder: 1.0.0 (1)

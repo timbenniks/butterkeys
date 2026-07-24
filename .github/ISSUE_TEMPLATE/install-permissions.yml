@@ -1,0 +1,38 @@
+name: Install / permissions
+description: Gatekeeper, Input Monitoring, Accessibility, or launch issues
+title: "Install: "
+labels: ["install"]
+body:
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Where it fails
+      options:
+        - Gatekeeper / damaged or can’t be opened
+        - Input Monitoring missing or won’t stick
+        - Accessibility missing or won’t stick
+        - App launches but never corrects
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: What you tried
+      description: Installed from DMG? Path is /Applications/ButterKeys.app?
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Redacted diagnostics (optional)
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version
+      placeholder: 15.x
+  - type: input
+    id: version
+    attributes:
+      label: ButterKeys version
+      placeholder: 1.0.0 (1)

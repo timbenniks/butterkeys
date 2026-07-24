@@ -1,0 +1,21 @@
+[
+  {"source": "teh", "replacement": "the", "matchType": "word", "behaviour": "automatic"},
+  {"source": "hte", "replacement": "the", "matchType": "word", "behaviour": "automatic"},
+  {"source": "htis", "replacement": "this", "matchType": "word", "behaviour": "automatic"},
+  {"source": "tihs", "replacement": "this", "matchType": "word", "behaviour": "automatic"},
+  {"source": "yoru", "replacement": "your", "matchType": "word", "behaviour": "automatic"},
+  {"source": "loosk", "replacement": "looks", "matchType": "word", "behaviour": "automatic"},
+  {"source": "adn", "replacement": "and", "matchType": "word", "behaviour": "automatic"},
+  {"source": "wiht", "replacement": "with", "matchType": "word", "behaviour": "automatic"},
+  {"source": "soem", "replacement": "some", "matchType": "word", "behaviour": "automatic"},
+  {"source": "jsut", "replacement": "just", "matchType": "word", "behaviour": "automatic"},
+  {"source": "base don", "replacement": "based on", "matchType": "phrase", "behaviour": "automatic"},
+  {"source": "int he", "replacement": "in the", "matchType": "phrase", "behaviour": "suggestion"},
+  {"source": "gove", "replacement": "give", "matchType": "word", "behaviour": "suggestion"},
+  {"source": "buidl", "replacement": "build", "matchType": "word", "behaviour": "suggestion"},
+  {"source": "writign", "replacement": "writing", "matchType": "word", "behaviour": "suggestion"},
+  {"source": "somethign", "replacement": "something", "matchType": "word", "behaviour": "suggestion"},
+  {"source": "workign", "replacement": "working", "matchType": "word", "behaviour": "suggestion"},
+  {"source": "buildign", "replacement": "building", "matchType": "word", "behaviour": "suggestion"},
+  {"source": "typoes", "replacement": "typos", "matchType": "word", "behaviour": "suggestion"}
+]

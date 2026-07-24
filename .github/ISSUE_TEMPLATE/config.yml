@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Download / install notes
+    url: https://github.com/timbenniks/butterkeys/blob/main/docs/download.md
+    about: How to install ButterKeys and grant permissions
+  - name: Privacy
+    url: https://github.com/timbenniks/butterkeys/blob/main/docs/privacy/PRIVACY.md
+    about: What ButterKeys stores and what it never stores
