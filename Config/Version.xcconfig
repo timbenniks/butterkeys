@@ -1,4 +1,3 @@
-// Single source of truth for marketing + build versions.
-// Bump MARKETING_VERSION for user-facing releases; bump CURRENT_PROJECT_VERSION every notarized build.
+// Auto-synced by scripts/version.sh — prefer project.yml as source of truth.
 MARKETING_VERSION = 1.0.0
-CURRENT_PROJECT_VERSION = 1
+CURRENT_PROJECT_VERSION = 2
