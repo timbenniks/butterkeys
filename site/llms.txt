@@ -1,0 +1,50 @@
+# ButterKeys
+
+> Local-first macOS menu bar app that corrects recurring personal typing mistakes (motor-pattern slips) in real time. Typing, but smoother.
+
+ButterKeys is not a cloud spellchecker or grammar rewriter. It focuses on the finger slips you repeat — adjacent key swaps, early spaces, classics like teh→the — and stays quiet when unsure. Everything for correction runs on the Mac. No accounts. No analytics. No network required to correct text.
+
+## Facts
+
+- Product: ButterKeys
+- Author: Tim Benniks
+- Platform: macOS 14 or later (Apple Silicon preferred)
+- Version: 1.0.0
+- Price: Free
+- License / source: https://github.com/timbenniks/butterkeys
+- Download (DMG): https://github.com/timbenniks/butterkeys/releases/download/v1.0.0/ButterKeys-1.0.0.dmg
+- Latest releases: https://github.com/timbenniks/butterkeys/releases/latest
+- Site: https://timbenniks.github.io/butterkeys/
+- Privacy: https://timbenniks.github.io/butterkeys/privacy.html
+- Install guide: https://timbenniks.github.io/butterkeys/install.html
+
+## What it does
+
+- Real-time correction of recurring motor-pattern typos
+- Teach personal rules from selection (Control-Option-T) or menu → Teach
+- Learning suggestions can become real rules when accepted
+- Undo last ButterKeys correction with Control-Option-Z
+- Code editors default to a narrower “code-safe” mode
+- Optional Sparkle update checks (no typing data in those requests)
+
+## What it does not do
+
+- Send keystrokes or sentences to the cloud
+- Store full sentences or raw keystroke logs
+- Monitor secure password fields
+- Require an account
+- Replace system spellcheck / Grammarly-style grammar rewriting
+
+## Permissions required
+
+- Input Monitoring (for the /Applications copy)
+- Accessibility (for the /Applications copy)
+- After granting both: quit and relaunch from Applications
+
+## Privacy summary
+
+Correction is local-only. Stored data is compact: explicit rules, learned typo pairs, motor-pattern aggregates, optional correction history, app policies, and settings. Never stored: full sentences, raw keystroke logs, passwords, clipboard contents.
+
+## Quick test
+
+In Notes, type `teh` and a space. It should become `the`. Undo with Control-Option-Z.

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Install ButterKeys on macOS — permissions guide</title>
+  <meta name="description" content="Install ButterKeys: download the DMG, drag to Applications, enable Input Monitoring and Accessibility, then relaunch. Quick test: type teh in Notes." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://timbenniks.github.io/butterkeys/install.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="ButterKeys" />
+  <meta property="og:url" content="https://timbenniks.github.io/butterkeys/install.html" />
+  <meta property="og:title" content="Install ButterKeys on macOS" />
+  <meta property="og:description" content="DMG install plus Input Monitoring and Accessibility setup for ButterKeys." />
+  <meta property="og:image" content="https://timbenniks.github.io/butterkeys/og.png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Install ButterKeys on macOS" />
+  <meta name="twitter:description" content="DMG install plus Input Monitoring and Accessibility setup for ButterKeys." />
+  <meta name="twitter:image" content="https://timbenniks.github.io/butterkeys/og.png" />
+
+  <link rel="icon" href="butterkeys.png" type="image/png" />
+  <link rel="apple-touch-icon" href="butterkeys.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Space+Grotesk:wght@500;600;700&family=Outfit:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "Install ButterKeys on macOS",
+    "description": "Download the ButterKeys DMG, install to Applications, grant Input Monitoring and Accessibility, then verify with a quick typing test.",
+    "totalTime": "PT5M",
+    "supply": [
+      { "@type": "HowToSupply", "name": "Mac running macOS 14 or later" }
+    ],
+    "tool": [
+      { "@type": "HowToTool", "name": "ButterKeys 1.0.0 DMG" }
+    ],
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Download the DMG",
+        "text": "Download ButterKeys-1.0.0.dmg from GitHub Releases."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Install to Applications",
+        "text": "Open the DMG and drag ButterKeys into Applications. Eject the DMG, then open ButterKeys from Applications."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Grant Input Monitoring",
+        "text": "System Settings → Privacy & Security → Input Monitoring → enable ButterKeys."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Grant Accessibility",
+        "text": "System Settings → Privacy & Security → Accessibility → enable ButterKeys."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Relaunch and test",
+        "text": "Quit ButterKeys completely and open it again from Applications. In Notes, type teh and a space — it should become the. Undo with Control-Option-Z."
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="wrap">
+    <header>
+      <a class="mark" href="./">
+        <img src="butterkeys.png" alt="ButterKeys app icon" width="40" height="40" />
+        ButterKeys
+      </a>
+      <nav aria-label="Primary">
+        <a class="hide-sm" href="./#how">How it works</a>
+        <a class="hide-sm" href="./#faq">FAQ</a>
+        <a class="hide-sm" href="privacy.html">Privacy</a>
+        <a class="btn btn-butter" href="./#download">Get the DMG</a>
+      </nav>
+    </header>
+
+    <main id="main" class="prose">
+      <h1>Install ButterKeys</h1>
+      <p class="lede">Local-first typing correction for macOS 14+. Five minutes, two permissions.</p>
+
+      <p>
+        <a class="btn btn-butter" href="https://github.com/timbenniks/butterkeys/releases/download/v1.0.0/ButterKeys-1.0.0.dmg" rel="noopener">Download ButterKeys 1.0.0</a>
+      </p>
+
+      <h2>1. Get the app</h2>
+      <ol>
+        <li>Download <strong>ButterKeys-1.0.0.dmg</strong> (or the latest from <a href="https://github.com/timbenniks/butterkeys/releases/latest">GitHub Releases</a>).</li>
+        <li>Open the DMG and drag <strong>ButterKeys</strong> into <strong>Applications</strong>.</li>
+        <li>Eject the DMG, then open ButterKeys from Applications (not from the disk image).</li>
+      </ol>
+
+      <h2>2. Permissions (required)</h2>
+      <p>Grant both for the copy in <code>/Applications</code> only:</p>
+      <ol>
+        <li><strong>System Settings → Privacy &amp; Security → Input Monitoring</strong> → enable ButterKeys</li>
+        <li><strong>System Settings → Privacy &amp; Security → Accessibility</strong> → enable ButterKeys</li>
+        <li>Quit ButterKeys completely and open it again from Applications</li>
+      </ol>
+      <p>
+        If corrections never fire, you are usually looking at the wrong binary (for example an Xcode build)
+        or a permission that was not re-granted after a re-sign.
+      </p>
+
+      <h2>3. Gatekeeper / “can’t be opened”</h2>
+      <p>
+        Early builds may not yet be Developer ID–notarized. If macOS blocks the app:
+      </p>
+      <ul>
+        <li>System Settings → Privacy &amp; Security → <strong>Open Anyway</strong>, or</li>
+        <li>Right-click ButterKeys → <strong>Open</strong> → confirm</li>
+      </ul>
+
+      <h2>4. Quick test</h2>
+      <ol>
+        <li>Open Notes</li>
+        <li>Type <code>teh</code> and a space — it should become <code>the</code></li>
+        <li>Undo with <strong>Control-Option-Z</strong></li>
+        <li>Teach a custom slip: select it and press <strong>Control-Option-T</strong></li>
+      </ol>
+
+      <h2>What to expect</h2>
+      <ul>
+        <li>High-confidence personal typos are smoothed automatically</li>
+        <li>When unsure, ButterKeys leaves your text alone</li>
+        <li>Code editors use a narrower “code-safe” mode</li>
+        <li>Optional HUD + sound in Settings → General</li>
+        <li>In-app updates via Sparkle (Settings → Check for Updates…)</li>
+      </ul>
+
+      <h2>Feedback</h2>
+      <p>
+        File issues on
+        <a href="https://github.com/timbenniks/butterkeys/issues">GitHub</a>
+        (false positive, missed correction, or install/permissions),
+        or use Settings → About → Report a problem.
+      </p>
+      <p>
+        For support, you can paste Settings → Advanced → Copy redacted diagnostics
+        (no sentences or raw keystrokes).
+      </p>
+
+      <p class="note">Privacy details: <a href="privacy.html">Privacy policy</a>. Typing never leaves your Mac for correction.</p>
+    </main>
+
+    <footer>
+      <span>© Tim Benniks · ButterKeys</span>
+      <span>
+        <a href="install.html">Install</a>
+        ·
+        <a href="privacy.html">Privacy</a>
+        ·
+        <a href="https://github.com/timbenniks/butterkeys">Source</a>
+      </span>
+    </footer>
+  </div>
+</body>
+</html>

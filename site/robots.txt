@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://timbenniks.github.io/butterkeys/sitemap.xml

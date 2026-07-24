@@ -3,511 +3,163 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ButterKeys — Typing, but smoother.</title>
-  <meta name="description" content="ButterKeys quietly fixes the recurring little mistakes your fingers make. Local-first macOS menu bar app. No cloud. No accounts." />
-  <link rel="icon" href="butterkeys.png" />
+  <title>ButterKeys,  Local-first typing correction for macOS</title>
+  <meta name="description" content="ButterKeys is a local-first macOS menu bar app that fixes your recurring finger slips (teh→the) on your Mac. Offline. No cloud. No accounts." />
+  <meta name="author" content="Tim Benniks" />
+  <meta name="theme-color" content="#f0c14a" />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <link rel="canonical" href="https://timbenniks.github.io/butterkeys/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ButterKeys" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:url" content="https://timbenniks.github.io/butterkeys/" />
+  <meta property="og:title" content="ButterKeys,  Local-first typing correction for macOS" />
+  <meta property="og:description" content="Quietly fixes recurring motor-pattern typos on your Mac. Offline. No cloud AI. No accounts." />
+  <meta property="og:image" content="https://timbenniks.github.io/butterkeys/og.png" />
+  <meta property="og:image:alt" content="ButterKeys,  Typing, but smoother." />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ButterKeys,  Local-first typing correction for macOS" />
+  <meta name="twitter:description" content="Quietly fixes recurring motor-pattern typos on your Mac. Offline. No cloud AI. No accounts." />
+  <meta name="twitter:image" content="https://timbenniks.github.io/butterkeys/og.png" />
+
+  <link rel="icon" href="butterkeys.png" type="image/png" />
+  <link rel="apple-touch-icon" href="butterkeys.png" />
+  <link rel="stylesheet" href="styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Space+Grotesk:wght@500;600;700&family=Outfit:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --milk: #eef4f7;
-      --frost: #f7fbfd;
-      --ink: #16202b;
-      --ink-soft: #3d4a58;
-      --butter: #f0c14a;
-      --butter-deep: #d4a017;
-      --toast: #6b4a1e;
-      --line: rgba(22, 32, 43, 0.12);
-      --glow: rgba(240, 193, 74, 0.45);
-      --radius: 18px;
-      --font-display: "Space Grotesk", system-ui, sans-serif;
-      --font-serif: "Fraunces", Georgia, serif;
-      --font-ui: "Outfit", system-ui, sans-serif;
-      --font-body: "IBM Plex Sans", system-ui, sans-serif;
-    }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: var(--font-body);
-      color: var(--ink);
-      background:
-        radial-gradient(1200px 600px at 80% -10%, rgba(240, 193, 74, 0.22), transparent 55%),
-        radial-gradient(900px 500px at -10% 30%, rgba(180, 210, 230, 0.55), transparent 50%),
-        linear-gradient(180deg, var(--frost) 0%, var(--milk) 45%, #e4eef3 100%);
-      min-height: 100vh;
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* Soft fridge-shelf grain */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0.035;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      z-index: 0;
-    }
-
-    a { color: inherit; }
-
-    .wrap {
-      position: relative;
-      z-index: 1;
-      width: min(1080px, calc(100% - 2.5rem));
-      margin: 0 auto;
-    }
-
-    /* —— Header —— */
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.25rem 0 0;
-      gap: 1rem;
-    }
-
-    .mark {
-      display: flex;
-      align-items: center;
-      gap: 0.7rem;
-      text-decoration: none;
-      font-family: var(--font-ui);
-      font-weight: 700;
-      font-size: 1.05rem;
-      letter-spacing: -0.02em;
-    }
-
-    .mark img {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      box-shadow: 0 6px 16px rgba(107, 74, 30, 0.18);
-    }
-
-    nav {
-      display: flex;
-      align-items: center;
-      gap: 1.25rem;
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--ink-soft);
-    }
-
-    nav a { text-decoration: none; }
-    nav a:hover { color: var(--ink); }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.45rem;
-      padding: 0.7rem 1.15rem;
-      border-radius: 999px;
-      border: none;
-      font: inherit;
-      font-weight: 600;
-      font-size: 0.95rem;
-      cursor: pointer;
-      text-decoration: none;
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-    }
-
-    .btn:focus-visible {
-      outline: 2px solid var(--butter-deep);
-      outline-offset: 3px;
-    }
-
-    .btn-butter {
-      background: var(--butter);
-      color: var(--toast);
-      box-shadow: 0 8px 24px var(--glow);
-    }
-
-    .btn-butter:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 12px 28px var(--glow);
-      background: #f5cb5c;
-    }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--ink-soft);
-      border: 1px solid var(--line);
-    }
-
-    .btn-ghost:hover {
-      background: rgba(255, 255, 255, 0.55);
-      color: var(--ink);
-    }
-
-    /* —— Hero —— */
-    .hero {
-      display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: 3rem;
-      align-items: center;
-      padding: 4.5rem 0 3.5rem;
-      min-height: min(78vh, 720px);
-    }
-
-    .hero-copy h1 {
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: clamp(2.6rem, 6vw, 4.4rem);
-      letter-spacing: -0.045em;
-      line-height: 0.98;
-      margin-bottom: 1rem;
-      color: var(--ink);
-    }
-
-    .hero-copy h1 em {
-      font-family: var(--font-serif);
-      font-style: normal;
-      font-weight: 500;
-      color: var(--toast);
-      letter-spacing: -0.02em;
-    }
-
-    .lede {
-      font-size: 1.15rem;
-      color: var(--ink-soft);
-      max-width: 34ch;
-      margin-bottom: 1.75rem;
-    }
-
-    .cta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-
-    .fine {
-      font-size: 0.82rem;
-      color: var(--ink-soft);
-    }
-
-    /* —— Melt stage (signature) —— */
-    .stage {
-      position: relative;
-      background: linear-gradient(165deg, #ffffff 0%, #f3f8fb 100%);
-      border: 1px solid var(--line);
-      border-radius: calc(var(--radius) + 6px);
-      padding: 1.5rem 1.5rem 1.35rem;
-      box-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.9) inset,
-        0 30px 60px rgba(22, 32, 43, 0.08);
-    }
-
-    .stage-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.25rem;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: var(--ink-soft);
-    }
-
-    .dots { display: flex; gap: 0.35rem; }
-    .dots span {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: #d5dee6;
-    }
-    .dots span:nth-child(1) { background: #ff6b6b; }
-    .dots span:nth-child(2) { background: var(--butter); }
-    .dots span:nth-child(3) { background: #7dcea0; }
-
-    .type-line {
-      font-family: var(--font-serif);
-      font-size: clamp(1.6rem, 3.2vw, 2.15rem);
-      font-weight: 500;
-      letter-spacing: -0.02em;
-      line-height: 1.35;
-      min-height: 3.2em;
-      color: var(--ink);
-    }
-
-    .slip {
-      display: inline-block;
-      position: relative;
-      padding: 0 0.12em;
-      border-radius: 0.25em;
-    }
-
-    .slip.is-wrong {
-      color: var(--toast);
-      background: rgba(240, 193, 74, 0.28);
-      text-decoration: line-through;
-      text-decoration-thickness: 2px;
-      text-decoration-color: rgba(107, 74, 30, 0.45);
-    }
-
-    .slip.is-melting {
-      animation: melt 0.55s ease forwards;
-    }
-
-    .slip.is-smooth {
-      color: var(--ink);
-      background: transparent;
-      animation: settle 0.4s ease;
-    }
-
-    @keyframes melt {
-      0% { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); }
-      55% { transform: translateY(6px) scale(1.04, 0.92); opacity: 0.35; filter: blur(1px); }
-      100% { transform: translateY(10px) scale(1.06, 0.7); opacity: 0; filter: blur(2px); }
-    }
-
-    @keyframes settle {
-      from { transform: translateY(-4px); opacity: 0.4; }
-      to { transform: none; opacity: 1; }
-    }
-
-    .cursor {
-      display: inline-block;
-      width: 2px;
-      height: 1.05em;
-      margin-left: 2px;
-      background: var(--butter-deep);
-      vertical-align: text-bottom;
-      animation: blink 1s steps(1) infinite;
-    }
-
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
-
-    .stage-caption {
-      margin-top: 1.1rem;
-      font-size: 0.85rem;
-      color: var(--ink-soft);
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0.25rem 0.65rem;
-      border-radius: 999px;
-      background: rgba(240, 193, 74, 0.2);
-      color: var(--toast);
-      font-weight: 600;
-      font-size: 0.78rem;
-    }
-
-    /* —— Band —— */
-    .band {
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      padding: 1.1rem 0;
-      overflow: hidden;
-      background: rgba(255, 255, 255, 0.35);
-      backdrop-filter: blur(8px);
-    }
-
-    .marquee {
-      display: flex;
-      gap: 2.5rem;
-      white-space: nowrap;
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 0.95rem;
-      letter-spacing: -0.02em;
-      color: var(--ink-soft);
-      animation: scroll 28s linear infinite;
-      width: max-content;
-    }
-
-    .marquee span b { color: var(--ink); font-weight: 800; }
-    .marquee .arrow { color: var(--butter-deep); padding: 0 0.35rem; }
-
-    @keyframes scroll {
-      from { transform: translateX(0); }
-      to { transform: translateX(-50%); }
-    }
-
-    /* —— Sections —— */
-    section {
-      padding: 4.5rem 0;
-    }
-
-    .section-title {
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: clamp(1.75rem, 3vw, 2.35rem);
-      letter-spacing: -0.035em;
-      margin-bottom: 0.5rem;
-    }
-
-    .section-lede {
-      color: var(--ink-soft);
-      max-width: 42ch;
-      margin-bottom: 2.25rem;
-    }
-
-    .beats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-    }
-
-    .beat {
-      padding: 1.35rem 1.25rem 1.4rem;
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, 0.55);
-      border: 1px solid var(--line);
-    }
-
-    .beat h3 {
-      font-family: var(--font-display);
-      font-size: 1.15rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.45rem;
-    }
-
-    .beat p {
-      color: var(--ink-soft);
-      font-size: 0.95rem;
-    }
-
-    .beat .ico {
-      font-family: var(--font-display);
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: var(--butter-deep);
-      margin-bottom: 0.7rem;
-      display: block;
-    }
-
-    /* Privacy strip */
-    .privacy {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      gap: 1.5rem;
-      align-items: center;
-      padding: 1.5rem 1.75rem;
-      border-radius: var(--radius);
-      background: var(--ink);
-      color: #e8eef3;
-    }
-
-    .privacy strong {
-      font-family: var(--font-display);
-      font-size: 1.2rem;
-      letter-spacing: -0.02em;
-      display: block;
-      margin-bottom: 0.25rem;
-    }
-
-    .privacy p {
-      color: rgba(232, 238, 243, 0.72);
-      font-size: 0.95rem;
-      max-width: 48ch;
-    }
-
-    .butter-stack {
-      width: 64px;
-      height: 64px;
-      border-radius: 14px;
-      object-fit: cover;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
-    }
-
-    /* Download */
-    .download {
-      text-align: center;
-      padding-bottom: 5rem;
-    }
-
-    .download .section-title { margin-bottom: 0.75rem; }
-    .download .section-lede {
-      margin-left: auto;
-      margin-right: auto;
-      margin-bottom: 1.75rem;
-    }
-
-    .reqs {
-      margin-top: 1.25rem;
-      font-size: 0.85rem;
-      color: var(--ink-soft);
-    }
-
-    footer {
-      border-top: 1px solid var(--line);
-      padding: 1.5rem 0 2.5rem;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 0.75rem;
-      font-size: 0.85rem;
-      color: var(--ink-soft);
-    }
-
-    footer a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
-
-    @media (max-width: 860px) {
-      .hero {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-        padding-top: 2.5rem;
-        min-height: 0;
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://timbenniks.github.io/butterkeys/#app",
+        "name": "ButterKeys",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "macOS 14 or later",
+        "description": "Local-first macOS menu bar app that corrects recurring personal typing mistakes (motor-pattern slips) in real time. No cloud, no accounts.",
+        "url": "https://timbenniks.github.io/butterkeys/",
+        "downloadUrl": "https://github.com/timbenniks/butterkeys/releases/download/v1.0.0/ButterKeys-1.0.0.dmg",
+        "softwareVersion": "1.0.0",
+        "author": {
+          "@type": "Person",
+          "name": "Tim Benniks",
+          "url": "https://github.com/timbenniks"
+        },
+        "publisher": {
+          "@type": "Person",
+          "name": "Tim Benniks",
+          "url": "https://github.com/timbenniks"
+        },
+        "isAccessibleForFree": true,
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "image": "https://timbenniks.github.io/butterkeys/og.png",
+        "screenshot": "https://timbenniks.github.io/butterkeys/og.png",
+        "license": "https://github.com/timbenniks/butterkeys",
+        "codeRepository": "https://github.com/timbenniks/butterkeys",
+        "featureList": [
+          "Real-time correction of recurring motor-pattern typos",
+          "Teach rules from selection with Control-Option-T",
+          "Local-only processing,  typing never leaves the Mac",
+          "Menu bar agent with undo (Control-Option-Z)",
+          "Code-safe mode for editors"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://timbenniks.github.io/butterkeys/#website",
+        "url": "https://timbenniks.github.io/butterkeys/",
+        "name": "ButterKeys",
+        "description": "Typing, but smoother. Local-first macOS typing correction.",
+        "publisher": { "@id": "https://timbenniks.github.io/butterkeys/#app" }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://timbenniks.github.io/butterkeys/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Is ButterKeys a cloud spellchecker?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. ButterKeys runs entirely on your Mac. It targets recurring personal motor-pattern slips (like teh→the), not generic cloud grammar or AI rewriting. Corrections never leave the machine."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does ButterKeys work offline?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Correction works fully offline. Optional Sparkle update checks only contact the release feed and never include keystrokes or typing data."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What macOS permissions does ButterKeys need?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Input Monitoring and Accessibility, granted for the copy in /Applications. After enabling both, quit and relaunch ButterKeys from Applications."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I teach ButterKeys my own typos?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Select the mistake and press Control-Option-T (or use Teach in the menu bar) to save an explicit rule. You can also accept Learning suggestions so they become real rules."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How is ButterKeys different from system autocorrect or Grammarly?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "System autocorrect and Grammarly focus on spelling and grammar, often with cloud features. ButterKeys is local-first and focused on the finger slips you repeat. When unsure, it leaves your text alone."
+            }
+          }
+        ]
       }
-      .beats { grid-template-columns: 1fr; }
-      .privacy {
-        grid-template-columns: 1fr;
-        text-align: left;
-      }
-      nav .hide-sm { display: none; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .marquee, .cursor, .slip.is-melting, .slip.is-smooth { animation: none !important; }
-      html { scroll-behavior: auto; }
-    }
-  </style>
+    ]
+  }
+  </script>
 </head>
 <body>
+  <a class="skip" href="#main">Skip to content</a>
   <div class="wrap">
     <header>
-      <a class="mark" href="#">
-        <img src="butterkeys.png" alt="" width="40" height="40" />
+      <a class="mark" href="./">
+        <img src="butterkeys.png" alt="ButterKeys app icon" width="40" height="40" />
         ButterKeys
       </a>
-      <nav>
+      <nav aria-label="Primary">
         <a class="hide-sm" href="#how">How it works</a>
-        <a class="hide-sm" href="#privacy">Privacy</a>
+        <a class="hide-sm" href="#faq">FAQ</a>
+        <a class="hide-sm" href="privacy.html">Privacy</a>
         <a class="btn btn-butter" href="#download">Get the DMG</a>
       </nav>
     </header>
 
-    <main>
+    <main id="main">
       <section class="hero" aria-label="Introduction">
         <div class="hero-copy">
           <h1>Typing,<br /><em>but smoother.</em></h1>
           <p class="lede">
             A macOS menu bar app that quietly melts your recurring finger slips
-            into the words you meant — on your Mac, offline.
+            into the words you meant, on your Mac, offline.
           </p>
           <div class="cta-row">
             <a class="btn btn-butter" href="#download">Download for Mac</a>
             <a class="btn btn-ghost" href="https://github.com/timbenniks/butterkeys" rel="noopener">GitHub</a>
           </div>
-          <p class="fine">macOS 14+ · Apple Silicon preferred · No account</p>
+          <p class="fine">macOS 14+ · Apple Silicon · Free · No account</p>
         </div>
 
         <aside class="stage" aria-label="Live correction demo">
@@ -528,19 +180,15 @@
   </div>
 
   <div class="band" aria-hidden="true">
-    <div class="marquee">
-      <span><b>teh</b><span class="arrow">→</span>the</span>
-      <span><b>soem</b><span class="arrow">→</span>some</span>
-      <span><b>writign</b><span class="arrow">→</span>writing</span>
-      <span><b>jsut</b><span class="arrow">→</span>just</span>
-      <span><b>int he</b><span class="arrow">→</span>in the</span>
-      <span><b>htis</b><span class="arrow">→</span>this</span>
-      <span><b>teh</b><span class="arrow">→</span>the</span>
-      <span><b>soem</b><span class="arrow">→</span>some</span>
-      <span><b>writign</b><span class="arrow">→</span>writing</span>
-      <span><b>jsut</b><span class="arrow">→</span>just</span>
-      <span><b>int he</b><span class="arrow">→</span>in the</span>
-      <span><b>htis</b><span class="arrow">→</span>this</span>
+    <div class="marquee" id="marquee">
+      <div class="marquee-group">
+        <span><b>teh</b><span class="arrow">→</span>the</span>
+        <span><b>soem</b><span class="arrow">→</span>some</span>
+        <span><b>writign</b><span class="arrow">→</span>writing</span>
+        <span><b>jsut</b><span class="arrow">→</span>just</span>
+        <span><b>int he</b><span class="arrow">→</span>in the</span>
+        <span><b>htis</b><span class="arrow">→</span>this</span>
+      </div>
     </div>
   </div>
 
@@ -548,67 +196,143 @@
     <section id="how">
       <h2 class="section-title">Motor patterns, not spellcheck</h2>
       <p class="section-lede">
-        ButterKeys watches for the mistakes you repeat — adjacent swaps, early spaces, the classic
-        <i>teh</i> — and only acts when it’s confident.
+        ButterKeys watches for the mistakes you repeat,  adjacent swaps, early spaces, the classic
+        <i>teh</i>,  and only acts when it's confident. Teach it the rest.
       </p>
       <div class="beats">
         <article class="beat">
-          <span class="ico" aria-hidden="true">∿</span>
-          <h3>Melt, don’t nag</h3>
+          <h3>Melt, don't nag</h3>
           <p>High-confidence slips become the right word as you type. Unsure? It leaves your text alone.</p>
         </article>
         <article class="beat">
-          <span class="ico" aria-hidden="true">⌘</span>
-          <h3>Stays in the bar</h3>
-          <p>Menu bar agent. Undo with ⌃⌥Z. Pause anytime. Code editors stay on a narrower “code-safe” mode.</p>
+          <h3>Teach from selection</h3>
+          <p>Select a typo and press ⌃⌥T (or menu → Teach) to save a personal rule. Learning suggestions become rules when you accept them.</p>
         </article>
         <article class="beat">
-          <span class="ico" aria-hidden="true">⌂</span>
           <h3>Fridge-local</h3>
-          <p>No cloud AI. No sentence storage. Just compact pairs like soem→some if you enable learning.</p>
+          <p>No cloud AI. No sentence storage. Just compact pairs like soem→some on your Mac.</p>
         </article>
+      </div>
+    </section>
+
+    <section id="compare" aria-labelledby="compare-title">
+      <h2 class="section-title" id="compare-title">Not another spellchecker</h2>
+      <p class="section-lede">
+        Same keyboard, different job. ButterKeys is for the slips your fingers keep making,  not for rewriting your prose in the cloud.
+      </p>
+      <div class="compare">
+        <div class="compare-col">
+          <h3>ButterKeys</h3>
+          <ul>
+            <li>Motor-pattern typos you repeat</li>
+            <li>Runs fully on your Mac</li>
+            <li>Teach rules; stay quiet when unsure</li>
+            <li>Code editors stay in a narrower mode</li>
+          </ul>
+        </div>
+        <div class="compare-col">
+          <h3>Typical spellcheck / grammar apps</h3>
+          <ul>
+            <li>Spelling, grammar, and style suggestions</li>
+            <li>Often cloud-backed or account-based</li>
+            <li>Broad rewrites and underline nags</li>
+            <li>Not tuned for personal finger slips</li>
+          </ul>
+        </div>
       </div>
     </section>
 
     <section id="privacy">
       <div class="privacy">
-        <img class="butter-stack" src="butterkeys.png" alt="" width="64" height="64" />
+        <img class="butter-stack" src="butterkeys.png" alt="ButterKeys app icon" width="64" height="64" />
         <div>
           <strong>Your typing stays on your Mac.</strong>
           <p>
-            Corrections never leave the machine. Update checks (optional) only hit the release feed —
+            Corrections never leave the machine. Update checks (optional) only hit the release feed, 
             never your keystrokes.
           </p>
         </div>
-        <a class="btn btn-ghost" style="color:#e8eef3;border-color:rgba(255,255,255,0.2)" href="https://github.com/timbenniks/butterkeys/blob/main/docs/privacy/PRIVACY.md" rel="noopener">Privacy notes</a>
+        <a class="btn btn-ghost" style="color:#e8eef3;border-color:rgba(255,255,255,0.2)" href="privacy.html">Privacy policy</a>
+      </div>
+    </section>
+
+    <section id="faq" aria-labelledby="faq-title">
+      <h2 class="section-title" id="faq-title">FAQ</h2>
+      <p class="section-lede">Straight answers for humans and answer engines.</p>
+      <div class="faq">
+        <details>
+          <summary>Is ButterKeys a cloud spellchecker?</summary>
+          <p>No. It runs on your Mac and targets recurring personal motor-pattern slips (like <i>teh</i>→<i>the</i>), not cloud grammar or AI rewriting. Corrections never leave the machine.</p>
+        </details>
+        <details>
+          <summary>Does it work offline?</summary>
+          <p>Yes. Correction is fully offline. Optional update checks only contact the release feed and never include typing data.</p>
+        </details>
+        <details>
+          <summary>What permissions does it need?</summary>
+          <p><strong>Input Monitoring</strong> and <strong>Accessibility</strong> for the copy in <code>/Applications</code>. Enable both, then quit and relaunch from Applications. See the <a href="install.html">install guide</a>.</p>
+        </details>
+        <details>
+          <summary>How do I teach it my typos?</summary>
+          <p>Select the mistake and press <strong>⌃⌥T</strong> (or menu → Teach). Accept Learning suggestions to turn them into real rules.</p>
+        </details>
+        <details>
+          <summary>How do I undo a correction?</summary>
+          <p>Press <strong>⌃⌥Z</strong> or use Undo in the menu bar. Host-app ⌘Z is not guaranteed to reverse a ButterKeys replacement.</p>
+        </details>
+        <details>
+          <summary>macOS says the app can't be opened. What now?</summary>
+          <p>Early builds may not be Developer ID–notarized yet. In System Settings → Privacy &amp; Security, choose <strong>Open Anyway</strong>, or right-click the app → Open. Details in the <a href="install.html">install guide</a>.</p>
+        </details>
       </div>
     </section>
 
     <section class="download" id="download">
       <h2 class="section-title">Spread some ButterKeys</h2>
       <p class="section-lede">
-        Early builds ship as a notarized DMG when ready. Until then, grab the latest release from GitHub.
+        Version 1.0.0 for macOS 14+. Free DMG from GitHub Releases. Open source.
       </p>
-      <a class="btn btn-butter" href="https://github.com/timbenniks/butterkeys/releases/latest" rel="noopener">
-        Download ButterKeys
-      </a>
+      <div class="cta-row" style="justify-content:center">
+        <a class="btn btn-butter" href="https://github.com/timbenniks/butterkeys/releases/download/v1.0.0/ButterKeys-1.0.0.dmg" rel="noopener">
+          Download ButterKeys 1.0.0
+        </a>
+        <a class="btn btn-ghost" href="install.html">Install guide</a>
+      </div>
       <p class="reqs">
-        After install: enable Input Monitoring + Accessibility for the app in Applications, then relaunch.
+        After install: enable Input Monitoring + Accessibility for ButterKeys in Applications, then relaunch.
+        <br />
+        Also on <a href="https://github.com/timbenniks/butterkeys/releases/latest">GitHub Releases</a>
+        · <a href="https://github.com/timbenniks/butterkeys/issues">Report a problem</a>
       </p>
     </section>
 
     <footer>
       <span>© Tim Benniks · ButterKeys</span>
       <span>
-        <a href="https://github.com/timbenniks/butterkeys/blob/main/docs/download.md">Install guide</a>
+        <a href="install.html">Install</a>
+        ·
+        <a href="privacy.html">Privacy</a>
         ·
         <a href="https://github.com/timbenniks/butterkeys">Source</a>
+        ·
+        <a href="llms.txt">llms.txt</a>
       </span>
     </footer>
   </div>
 
   <script>
     (function () {
+      const marquee = document.getElementById("marquee");
+      if (marquee) {
+        const group = marquee.querySelector(".marquee-group");
+        const seed = Array.from(group.children).map((node) => node.cloneNode(true));
+        const fillTo = Math.max(window.innerWidth, 1200) * 1.25;
+        while (group.scrollWidth < fillTo) {
+          seed.forEach((node) => group.appendChild(node.cloneNode(true)));
+        }
+        marquee.appendChild(group.cloneNode(true));
+      }
+
       const pairs = [
         { wrong: "teh", right: "the", sentence: ["I", "meant", "to", "write", null, "word."] },
         { wrong: "soem", right: "some", sentence: ["Just", null, "butter", "on", "top."] },
